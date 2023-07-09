@@ -26,3 +26,6 @@
 
 # RSpec
 spec/examples.txt
+
+# macOS
+.DS_Store

@@ -1,0 +1,13 @@
+<p style="color: green"><%= notice %></p>
+
+<h2><%= @dog.name %></h2>
+<h3><%= Time.current.in_time_zone(@timezone).to_date.to_fs(:long) %></h3>
+
+<div id="behaviors">
+  <% @behaviors.each do |behavior| %>
+    <%= render partial: "behavior", object: behavior, locals: {
+      count: @tracked_behavior_counts_by_behavior_id[behavior.id] || 0,
+      dog: @dog,
+    } %>
+  <% end %>
+</div>

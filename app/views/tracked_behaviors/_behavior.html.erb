@@ -1,0 +1,10 @@
+<div id="<%= dom_id behavior %>">
+  <p>
+    <strong><%= behavior.name %>:</strong>
+    <%= count %>
+  </p>
+  <%= form_for [dog, TrackedBehavior.new(behavior: behavior)] do |f| %>
+    <%= f.hidden_field :behavior_id %>
+    <%= submit_tag "+1" %>
+  <%- end -%>
+</div>
