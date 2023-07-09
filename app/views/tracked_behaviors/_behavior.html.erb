@@ -1,10 +1,7 @@
-<div id="<%= dom_id behavior %>">
-  <p>
-    <strong><%= behavior.name %>:</strong>
-    <%= count %>
-  </p>
+<section id="<%= dom_id behavior %>" data-behavior-color="<%= behavior.color %>">
   <%= form_for [dog, TrackedBehavior.new(behavior: behavior)] do |f| %>
     <%= f.hidden_field :behavior_id %>
-    <%= submit_tag "+1" %>
-  <%- end -%>
-</div>
+    <h3><%= behavior.name %></h3>
+    <%= submit_tag count, data: {behavior_color: behavior.color} %>
+  <% end %>
+</section>

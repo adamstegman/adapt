@@ -4,13 +4,15 @@ class TrackedBehaviorsController < ApplicationController
   before_action :set_dog
 
   def index
+    @timezone = DEFAULT_TIMEZONE
     # TODO: sorting
     @behaviors = Behavior.all
-    # TODO: timeframe query parameters
-    @tracked_behavior_counts_by_behavior_id = @dog.tracked_behaviors.seen_today_in_timezone(DEFAULT_TIMEZONE).group(:behavior_id).count
+    # TODO: timeframe query parameters, or define timeframe by behavior
+    @tracked_behavior_counts_by_behavior_id = @dog.tracked_behaviors.seen_today_in_timezone(@timezone).group(:behavior_id).count
   end
 
   def create
+    # TODO: historical data entry (Sleep, Rest, Night Waking)
     @tracked_behavior = @dog.tracked_behaviors.build(tracked_behavior_params.merge(seen_at: Time.current))
 
     respond_to do |format|
@@ -23,6 +25,8 @@ class TrackedBehaviorsController < ApplicationController
       end
     end
   end
+
+  # TODO: destroy last entry if added by mistake
 
   private
 
