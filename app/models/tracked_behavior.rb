@@ -13,23 +13,32 @@ class TrackedBehavior < ApplicationRecord
 
   scope :seen_from, -> { where(seen_at: _1..) }
   scope :seen_to, -> { where(seen_at: .._1) }
+  scope :seen_on, ->(date) { where(seen_at: beginning_of_day(date)..end_of_day(date)) }
   scope :seen_today_in_timezone, ->(zone) {
     seen_from(Time.current.in_time_zone(zone).beginning_of_day.change(hour: NEW_DAY_HOUR))
   }
 
-  def self.beginning_of_day(time)
-    if time.hour < NEW_DAY_HOUR
-      beginning_of_day(1.day.before(time).end_of_day)
+  def self.beginning_of_day(time_or_date)
+    time_or_date = time_or_date.to_time.change(hour: NEW_DAY_HOUR, min: 1) unless time_or_date.respond_to?(:hour)
+
+    if time_or_date.hour < NEW_DAY_HOUR
+      beginning_of_day(1.day.before(time_or_date).end_of_day)
     else
-      time.beginning_of_day.change(hour: NEW_DAY_HOUR)
+      time_or_date.beginning_of_day.change(hour: NEW_DAY_HOUR)
     end
   end
 
-  def self.end_of_day(time)
-    if time.hour < NEW_DAY_HOUR
-      time.beginning_of_day.change(hour: NEW_DAY_HOUR - 1, min: 59, sec: 59, usec: Rational(999999999, 1000))
+  def self.parse_date_string(date_string)
+    beginning_of_day(Time.zone.parse(date_string).change(hour: NEW_DAY_HOUR, min: 1))
+  end
+
+  def self.end_of_day(time_or_date)
+    time_or_date = time_or_date.to_time.change(hour: NEW_DAY_HOUR, min: 1) unless time_or_date.respond_to?(:hour)
+
+    if time_or_date.hour < NEW_DAY_HOUR
+      time_or_date.beginning_of_day.change(hour: NEW_DAY_HOUR - 1, min: 59, sec: 59, usec: Rational(999999999, 1000))
     else
-      end_of_day(1.day.after(time).beginning_of_day)
+      end_of_day(1.day.after(time_or_date).beginning_of_day)
     end
   end
 end

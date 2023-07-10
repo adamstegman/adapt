@@ -1,24 +1,24 @@
 <h2><%= @dog.name %></h2>
 
-<article>
+<article data-behavior-color="<%= @behavior.color %>">
   <h3><%= @behavior.name %></h3>
   <table>
     <thead>
       <tr>
         <th>Date</th>
         <th>Count</th>
-        <th>Add</th>
-        <th>Remove</th>
+        <th>Remove last</th>
       </tr>
     </thead>
     <tbody>
       <% @tracked_behavior_counts_by_date.each do |date, count| %>
         <tr>
           <td><%= date.to_fs(:long) %></td>
-          <td><%= count %></td>
           <td>
-            <% if date == @latest_date %>
-              <%= button_to "+1", dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :post %>
+            <%= form_tag update_count_dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :patch do %>
+              <%= hidden_field_tag :date, date.iso8601 %>
+              <%= text_field_tag :count, count, size: 4 %>
+              <%= submit_tag "Update" %>
             <% end %>
           </td>
           <td>

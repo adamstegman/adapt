@@ -4,7 +4,6 @@ class Behaviors::TrackedBehaviorsController < ApplicationController
 
   def index
     @timezone = DEFAULT_TIMEZONE
-    @behavior = Behavior.find(params[:behavior_id])
     # TODO: pagination, remove delete control on earlier pages
     current_time = Time.current.in_time_zone(@timezone)
     earliest_time = TrackedBehavior.beginning_of_day(6.days.before(current_time))
@@ -12,27 +11,36 @@ class Behaviors::TrackedBehaviorsController < ApplicationController
     @latest_date = TrackedBehavior.beginning_of_day(latest_time).to_date
     @is_current_date = true
     @tracked_behavior_counts_by_date = ((earliest_time.to_date)..@latest_date).each_with_object({}) do |date, acc|
-      acc[date] = 0
-    end
-    @dog.tracked_behaviors.seen_from(earliest_time).seen_to(latest_time).where(behavior: @behavior).each_with_object(@tracked_behavior_counts_by_date) do |tracked_behavior, acc|
-      original_seen_at = tracked_behavior.seen_at.in_time_zone(@timezone)
-      seen_at_date = TrackedBehavior.beginning_of_day(original_seen_at).to_date
-      acc[seen_at_date] += 1
+      acc[date] = @dog.tracked_behaviors.seen_on(date).where(behavior: @behavior).count
     end
   end
 
-  def create
-    # TODO: historical data entry (Sleep, Rest, Night Waking)
-    @tracked_behavior = @dog.tracked_behaviors.build(behavior: @behavior, seen_at: Time.current)
-
-    respond_to do |format|
-      if @tracked_behavior.save
-        format.html { redirect_to dog_behavior_tracked_behaviors_path(@dog, @behavior), notice: "Added behavior." }
-        format.json { render :show, status: :created, location: tracked_behaviors_url }
-      else
-        format.html { redirect_to dog_behavior_tracked_behaviors_path(@dog, @behavior), error: "Could not add behavior!" }
-        format.json { render json: @tracked_behavior.errors, status: :unprocessable_entity }
+  def update_count
+    @timezone = DEFAULT_TIMEZONE
+    date = Time.use_zone(@timezone) { Time.zone.parse(params[:date]).to_date }
+    tracked_behaviors = @dog.tracked_behaviors.seen_on(date).where(behavior: @behavior)
+    new_count = params[:count].to_i
+    existing_count = tracked_behaviors.count
+    if new_count < existing_count
+      remove_count = existing_count - new_count
+      tracked_behaviors.order(seen_at: :desc).limit(remove_count).destroy_all
+    elsif new_count > existing_count
+      new_tracked_behaviors = (new_count - existing_count).times.map {
+        # Don't have a specific time for these, so put them at end of day,
+        # so they would be removed if the count is changed to be lower
+        @dog.tracked_behaviors.build(behavior: @behavior, seen_at: TrackedBehavior.end_of_day(date))
+      }
+      unless new_tracked_behaviors.map(&:save).all?
+        respond_to do |format|
+          format.html { redirect_to dog_behavior_tracked_behaviors_path(@dog, @behavior), error: "Could not add behaviors!" }
+          format.json { render json: new_tracked_behavior.map(&:errors), status: :unprocessable_entity }
+        end
+        return
       end
+    end
+    respond_to do |format|
+      format.html { redirect_to dog_behavior_tracked_behaviors_path(@dog, @behavior), notice: "Updated behavior count." }
+      format.json { render :show, status: :created, location: tracked_behaviors_url }
     end
   end
 
@@ -53,6 +61,6 @@ class Behaviors::TrackedBehaviorsController < ApplicationController
   private
 
   def set_behavior
-    @behavior = Behavior.find(params[:behavior_id]) if params[:behavior_id]
+    @behavior = Behavior.find(params[:behavior_id])
   end
 end
