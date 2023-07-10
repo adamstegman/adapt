@@ -17,7 +17,7 @@
           <td>
             <%= form_tag update_count_dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :patch do %>
               <%= hidden_field_tag :date, date.iso8601 %>
-              <%= text_field_tag :count, count, size: 4 %>
+              <%= number_field_tag :count, count, size: 4, min: 0 %>
               <%= submit_tag "Update" %>
             <% end %>
           </td>
