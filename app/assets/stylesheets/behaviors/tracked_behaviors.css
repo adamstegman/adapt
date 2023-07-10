@@ -8,5 +8,6 @@ th, td {
 }
 
 article {
+  border-radius: 1rem;
   padding: 1rem;
 }
