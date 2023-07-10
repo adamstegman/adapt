@@ -1,0 +1,35 @@
+<h2><%= @dog.name %></h2>
+
+<article>
+  <h3><%= @behavior.name %></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Count</th>
+        <th>Add</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tracked_behavior_counts_by_date.each do |date, count| %>
+        <tr>
+          <td><%= date.to_fs(:long) %></td>
+          <td><%= count %></td>
+          <td>
+            <% if date == @latest_date %>
+              <%= button_to "+1", dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :post %>
+            <% end %>
+          </td>
+          <td>
+            <%
+              # TODO: when paginated, only when on latest page AND latest date
+            if date == @latest_date %>
+              <%= button_to "-1", destroy_latest_dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :delete %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</article>
