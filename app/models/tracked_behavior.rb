@@ -28,10 +28,6 @@ class TrackedBehavior < ApplicationRecord
     end
   end
 
-  def self.parse_date_string(date_string)
-    beginning_of_day(Time.zone.parse(date_string).change(hour: NEW_DAY_HOUR, min: 1))
-  end
-
   def self.end_of_day(time_or_date)
     time_or_date = time_or_date.to_time.change(hour: NEW_DAY_HOUR, min: 1) unless time_or_date.respond_to?(:hour)
 

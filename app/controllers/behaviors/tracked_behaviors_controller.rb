@@ -4,12 +4,15 @@ class Behaviors::TrackedBehaviorsController < ApplicationController
 
   def index
     @timezone = DEFAULT_TIMEZONE
-    # TODO: pagination, remove delete control on earlier pages
     current_time = Time.current.in_time_zone(@timezone)
+    @is_current_week = true
+    if (@page = params[:page].to_i) > 0
+      current_time = @page.weeks.before(current_time)
+      @is_current_week = false
+    end
     earliest_time = TrackedBehavior.beginning_of_day(6.days.before(current_time))
     latest_time = TrackedBehavior.end_of_day(current_time)
     @latest_date = TrackedBehavior.beginning_of_day(latest_time).to_date
-    @is_current_date = true
     @tracked_behavior_counts_by_date = ((earliest_time.to_date)..@latest_date).each_with_object({}) do |date, acc|
       acc[date] = @dog.tracked_behaviors.seen_on(date).where(behavior: @behavior).count
     end

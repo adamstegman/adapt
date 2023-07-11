@@ -22,9 +22,7 @@
             <% end %>
           </td>
           <td>
-            <%
-              # TODO: when paginated, only when on latest page AND latest date
-            if date == @latest_date %>
+            <% if @is_current_week && date == @latest_date %>
               <%= button_to "-1", destroy_latest_dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :delete %>
             <% end %>
           </td>
@@ -32,4 +30,10 @@
       <% end %>
     </tbody>
   </table>
+  <footer>
+    <%= link_to "◀️ Previous week", dog_behavior_tracked_behaviors_path(@dog, @behavior, page: @page + 1) %>
+    <% unless @is_current_week %>
+      <%= link_to "Next week ▶️", dog_behavior_tracked_behaviors_path(@dog, @behavior, page: @page - 1) %>
+    <% end %>
+  </footer>
 </article>

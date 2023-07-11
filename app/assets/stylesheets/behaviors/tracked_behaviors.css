@@ -1,6 +1,7 @@
 table {
   border-collapse: collapse;
   text-align: center;
+  width: 100%;
 }
 th, td {
   border-bottom: 1px solid black;
@@ -10,4 +11,16 @@ th, td {
 article {
   border-radius: 1rem;
   padding: 1rem;
+}
+
+footer {
+  margin-top: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+}
+footer a {
+  color: #333;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
 }
