@@ -4,9 +4,9 @@
 </hgroup>
 
 <main id="behaviors">
-  <% @behaviors.each do |behavior| %>
-    <%= render partial: "behavior", object: behavior, locals: {
-      count: @tracked_behavior_counts_by_behavior_id[behavior.id] || 0,
+  <% @counted_behaviors.each do |behavior| %>
+    <%= render partial: "counted_behavior", object: behavior, locals: {
+      count: @behavior_counts_by_behavior_id[behavior.id] || 0,
       dog: @dog,
       # TODO: last_seen_at
     } %>

@@ -1,9 +1,9 @@
-# A Behavior that can be performed by a Dog.
+# A behavior that can be performed by a Dog.
+# The occurrences of behavior are counted based on when they occur, via CountedBehaviorOccurrence.
 # == Attributes
 # === Required
-# name:: the name of the Behavior.
-# TODO: these are counter behaviors, also need duration behaviors (Sleep, Rest)
-class Behavior < ApplicationRecord
+# name:: the name of the behavior.
+class CountedBehavior < ApplicationRecord
   enum(:color,
     amber: "amber",
     blue: "blue",

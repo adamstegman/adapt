@@ -11,11 +11,11 @@
       </tr>
     </thead>
     <tbody>
-      <% @tracked_behavior_counts_by_date.each do |date, count| %>
+      <% @behavior_counts_by_date.each do |date, count| %>
         <tr>
           <td><%= date.to_fs(:long) %></td>
           <td>
-            <%= form_tag update_count_dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :patch do %>
+            <%= form_tag update_count_dog_counted_behavior_counted_behavior_occurrences_path(@dog, @behavior), method: :patch do %>
               <%= hidden_field_tag :date, date.iso8601 %>
               <%= number_field_tag :count, count, size: 4, min: 0 %>
               <%= submit_tag "Update" %>
@@ -23,7 +23,7 @@
           </td>
           <td>
             <% if @is_current_week && date == @latest_date %>
-              <%= button_to "-1", destroy_latest_dog_behavior_tracked_behaviors_path(@dog, @behavior), method: :delete %>
+              <%= button_to "-1", destroy_latest_dog_counted_behavior_counted_behavior_occurrences_path(@dog, @behavior), method: :delete %>
             <% end %>
           </td>
         </tr>
@@ -31,9 +31,9 @@
     </tbody>
   </table>
   <footer>
-    <%= link_to "◀️ Previous week", dog_behavior_tracked_behaviors_path(@dog, @behavior, page: @page + 1) %>
+    <%= link_to "◀️ Previous week", dog_counted_behavior_counted_behavior_occurrences_path(@dog, @behavior, page: @page + 1) %>
     <% unless @is_current_week %>
-      <%= link_to "Next week ▶️", dog_behavior_tracked_behaviors_path(@dog, @behavior, page: @page - 1) %>
+      <%= link_to "Next week ▶️", dog_counted_behavior_counted_behavior_occurrences_path(@dog, @behavior, page: @page - 1) %>
     <% end %>
   </footer>
 </article>

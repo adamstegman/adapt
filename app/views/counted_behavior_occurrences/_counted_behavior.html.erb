@@ -1,0 +1,7 @@
+<section id="<%= dom_id counted_behavior %>" data-behavior-color="<%= counted_behavior.color %>">
+  <%= form_for [dog, CountedBehaviorOccurrence.new(counted_behavior: counted_behavior)] do |f| %>
+    <%= f.hidden_field :counted_behavior_id %>
+    <h3><%= link_to counted_behavior.name, dog_counted_behavior_counted_behavior_occurrences_path(@dog, counted_behavior) %></h3>
+    <%= submit_tag count, data: {behavior_color: counted_behavior.color} %>
+  <% end %>
+</section>

@@ -1,15 +1,16 @@
-# An instance of Behavior that was performed by a Dog.
+# An instance of a CountedBehavior that was performed by a Dog.
+# These occurrences of behavior are counted based on when they occur.
 # == Attributes
 # === Required
-# seen_at:: when the Behavior was observed.
-class TrackedBehavior < ApplicationRecord
+# seen_at:: when the CountedBehavior was observed.
+class CountedBehaviorOccurrence < ApplicationRecord
   # Assume we may stay up past midnight, so start a "new day" at 4:00 AM
   NEW_DAY_HOUR = 4
 
   belongs_to :dog
-  belongs_to :behavior
+  belongs_to :counted_behavior
 
-  validates_presence_of :dog, :behavior, :seen_at
+  validates_presence_of :dog, :counted_behavior, :seen_at
 
   scope :seen_from, -> { where(seen_at: _1..) }
   scope :seen_to, -> { where(seen_at: .._1) }
