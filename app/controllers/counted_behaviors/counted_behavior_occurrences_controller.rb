@@ -14,7 +14,9 @@ class CountedBehaviors::CountedBehaviorOccurrencesController < ApplicationContro
     latest_time = CountedBehaviorOccurrence.end_of_day(current_time)
     @latest_date = CountedBehaviorOccurrence.beginning_of_day(latest_time).to_date
     @behavior_counts_by_date = ((earliest_time.to_date)..@latest_date).each_with_object({}) do |date, acc|
-      acc[date] = @dog.counted_behavior_occurrences.seen_on(date).where(counted_behavior: @behavior).count
+      acc[date] = @dog.counted_behavior_occurrences.seen_on(date, in_time_zone: @timezone).where(
+        counted_behavior: @behavior,
+      ).count
     end
   end
 

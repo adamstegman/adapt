@@ -14,14 +14,15 @@ class CountedBehaviorOccurrence < ApplicationRecord
 
   scope :seen_from, -> { where(seen_at: _1..) }
   scope :seen_to, -> { where(seen_at: .._1) }
-  scope :seen_on, ->(date) { where(seen_at: beginning_of_day(date)..end_of_day(date)) }
+  scope :seen_on, ->(date, in_time_zone:) {
+    time = date.in_time_zone(in_time_zone).change(hour: NEW_DAY_HOUR, min: 1)
+    where(seen_at: beginning_of_day(time)..end_of_day(time))
+  }
   scope :seen_today_in_timezone, ->(zone) {
     seen_from(Time.current.in_time_zone(zone).beginning_of_day.change(hour: NEW_DAY_HOUR))
   }
 
   def self.beginning_of_day(time_or_date)
-    time_or_date = time_or_date.to_time.change(hour: NEW_DAY_HOUR, min: 1) unless time_or_date.respond_to?(:hour)
-
     if time_or_date.hour < NEW_DAY_HOUR
       beginning_of_day(1.day.before(time_or_date).end_of_day)
     else
@@ -30,8 +31,6 @@ class CountedBehaviorOccurrence < ApplicationRecord
   end
 
   def self.end_of_day(time_or_date)
-    time_or_date = time_or_date.to_time.change(hour: NEW_DAY_HOUR, min: 1) unless time_or_date.respond_to?(:hour)
-
     if time_or_date.hour < NEW_DAY_HOUR
       time_or_date.beginning_of_day.change(hour: NEW_DAY_HOUR - 1, min: 59, sec: 59, usec: Rational(999999999, 1000))
     else
