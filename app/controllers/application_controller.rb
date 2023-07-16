@@ -7,4 +7,9 @@ class ApplicationController < ActionController::Base
     # TODO: allow switching between dogs
     @dog = Dog.poppy
   end
+
+  def set_timezone
+    # TODO: preferences by user
+    @timezone = DEFAULT_TIMEZONE
+  end
 end

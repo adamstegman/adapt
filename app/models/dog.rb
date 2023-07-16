@@ -5,7 +5,7 @@
 class Dog < ApplicationRecord
   validates_presence_of :name
 
-  has_many :counted_behavior_occurrences
+  has_many :behavior_occurrences
 
   def self.poppy
     Dog.first

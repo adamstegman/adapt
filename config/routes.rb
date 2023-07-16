@@ -1,18 +1,11 @@
 Rails.application.routes.draw do
   resources :dogs, only: [] do
-    resources :counted_behavior_occurrences, only: [:index, :create]
-    resources :counted_behaviors, only: [] do
-      scope module: :counted_behaviors do
-        resources :counted_behavior_occurrences, path: :occurrences, only: [:index] do
-          collection do
-            patch :update_count
-            delete :destroy_latest
-          end
-        end
+    resources :behaviors, only: [:index] do
+      scope module: :behaviors do
+        resources :behavior_occurrences, path: :occurrences, only: [:index, :create, :update]
       end
     end
-    # TODO: data visualization
   end
 
-  root to: redirect("/dogs/1/counted_behavior_occurrences")
+  root to: redirect("/dogs/1/behaviors")
 end

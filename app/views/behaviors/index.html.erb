@@ -1,0 +1,14 @@
+<hgroup>
+  <h2><%= @dog.name %></h2>
+  <h3><%= @today.to_fs(:long) %></h3>
+</hgroup>
+
+<main id="behaviors">
+  <% @behaviors.each do |behavior| %>
+    <%= render partial: "behavior", object: behavior, locals: {
+      occurrence: @behavior_occurrence_by_behavior_id[behavior.id],
+      dog: @dog,
+      # TODO: last_seen_at
+    } %>
+  <% end %>
+</main>
