@@ -63,7 +63,7 @@ class Behaviors::BehaviorOccurrencesController < ApplicationController
   # Go back to the page you were on, whether #index or behaviors#index
   def redirect_destination
     # Root page has numbers as the submit button, so use that to figure out where we came from
-    if params[:commit] =~ /\d/
+    if params[:commit] =~ /\A[\d\.]+\z/
       dog_behaviors_path(@dog)
     else
       dog_behavior_behavior_occurrences_path(@dog, @behavior, page: params[:page].to_i)
