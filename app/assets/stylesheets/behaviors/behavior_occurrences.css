@@ -13,13 +13,11 @@ article {
   padding: 1rem;
 }
 
-footer {
-  margin-top: 1rem;
-
+article > footer {
   display: flex;
   justify-content: space-between;
 }
-footer a {
+article > footer a {
   color: #333;
   padding: 0.5rem 1rem;
   text-decoration: none;

@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="apple-mobile-web-app-title" content="Adapt">
+    <meta name="application-name" content="Adapt">
+    <meta name="msapplication-TileColor" content="#1976d2">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+
+    <%= favicon_link_tag "dog.svg", type: "image/svg+xml" %>
+    <%= favicon_link_tag "apple-touch-icon.png", rel: "apple-touch-icon", type: "image/png", sizes: "180x180" %>
+    <%= favicon_link_tag "favicon-32x32.png", type: "image/png", sizes: "32x32" %>
+    <%= favicon_link_tag "favicon-16x16.png", type: "image/png", sizes: "16x16" %>
+    <link rel="manifest" href="/site.webmanifest">
+    <%= favicon_link_tag "safari-pinned-tab.svg", rel: "mask-icon", color: "#5bbad5" %>
+    <%= favicon_link_tag "favicon.ico", rel: "shortcut icon" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -13,5 +25,8 @@
   <body>
     <h1><%= link_to "ADAPT", root_path %></h1>
     <%= yield %>
+    <footer>
+      <%= link_to "About", about_index_path %>
+    </footer>
   </body>
 </html>

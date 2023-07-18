@@ -7,5 +7,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "about/index"
+
   root to: redirect("/dogs/1/behaviors")
 end
