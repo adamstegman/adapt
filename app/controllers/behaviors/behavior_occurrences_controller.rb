@@ -5,20 +5,21 @@ class Behaviors::BehaviorOccurrencesController < ApplicationController
 
   def index
     @today = Time.current.in_time_zone(@timezone).to_date
-    @is_current_week = true
+    @is_current_page = true
     # TODO: these page numbers are not persistent, so use dates instead?
     if (@page = params[:page].to_i) > 0
-      @today = @page.weeks.before(@today)
-      @is_current_week = false
+      @today = @page.months.before(@today)
+      @is_current_page = false
     end
-    earliest_date = 6.days.before(@today)
+    earliest_date = 1.month.before(@today) + 1.day
     behavior_occurrences = @dog.behavior_occurrences.where(
       behavior: @behavior,
       seen_on_date: earliest_date..@today,
     ).order(:seen_on_date).to_a
-    @behavior_occurrences_by_date = (earliest_date..@today).each_with_object({}) do |date, acc|
-      acc[date] = if behavior_occurrences[0]&.seen_on_date == date
-        behavior_occurrences.shift
+    @date_range = (earliest_date..@today).to_a.reverse
+    @behavior_occurrences_by_date = @date_range.each_with_object({}) do |date, acc|
+      acc[date] = if behavior_occurrences.last&.seen_on_date == date
+        behavior_occurrences.pop
       else
         @dog.behavior_occurrences.build(behavior: @behavior, seen_on_date: date)
       end
