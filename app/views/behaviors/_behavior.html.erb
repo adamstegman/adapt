@@ -5,7 +5,7 @@
     <%= f.submit number_with_precision(occurrence.amount, strip_insignificant_zeros: true), data: {behavior_color: behavior.color} %>
   <% end %>
   <% if occurrence.updated_at %>
-    <span><%= occurrence.updated_at.in_time_zone(@timezone).strftime("%l:%M %p") %></span>
+    <span><%= time_ago_in_words(occurrence.updated_at) %> ago</span>
   <% else %>
     <span>&nbsp;</span>
   <% end %>

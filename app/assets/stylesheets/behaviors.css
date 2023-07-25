@@ -34,6 +34,7 @@ section input[type=submit] {
   font-weight: bold;
 }
 section span {
+  font-size: 0.75rem;
   margin: 0 1rem 1rem;
 }
 
