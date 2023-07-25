@@ -1,7 +1,7 @@
 main#behaviors {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 9em);
-  grid-template-rows: repeat(auto-fill, 9em);
+  grid-template-columns: repeat(auto-fill, 9rem);
+  grid-template-rows: repeat(auto-fill, 11rem);
   gap: 1rem;
   justify-content: center;
 }
@@ -11,15 +11,14 @@ section {
   flex-direction: column;
 
   border-radius: 0.75rem;
+  text-align: center;
 }
 section form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding: 1rem;
-
-  text-align: center;
+  margin: 1rem 1rem 0;
 }
 section h3 {
   margin: 0;
@@ -33,6 +32,9 @@ section input[type=submit] {
   cursor: pointer;
   font-size: 2em;
   font-weight: bold;
+}
+section span {
+  margin: 0 1rem 1rem;
 }
 
 /* TODO: dark mode */

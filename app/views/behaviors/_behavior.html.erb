@@ -4,4 +4,9 @@
     <h3><%= link_to behavior.name, dog_behavior_behavior_occurrences_path(@dog, behavior) %></h3>
     <%= f.submit number_with_precision(occurrence.amount, strip_insignificant_zeros: true), data: {behavior_color: behavior.color} %>
   <% end %>
+  <% if occurrence.updated_at %>
+    <span><%= occurrence.updated_at.in_time_zone(@timezone).strftime("%l:%M %p") %></span>
+  <% else %>
+    <span>&nbsp;</span>
+  <% end %>
 </section>

@@ -16,16 +16,13 @@
 
 html {
   color: #333;
-  font-family: sans-serif;
+  font-family: "Arial Black", sans-serif;
 }
 
 body {
   margin: 0 2rem;
 }
 
-h1, h2, h3 {
-  font-family: "Arial Black", sans-serif;
-}
 h1 a,
 h3 a {
   color: inherit;
