@@ -1,43 +1,16 @@
 <h2><%= @dog.name %></h2>
 
-<!-- TODO: data visualization -->
-<article data-behavior-color="<%= @behavior.color %>">
+<article id="behavior-occurrences" data-behavior-color="<%= @behavior.color %>">
   <h3><%= @behavior.name %></h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Amount</th>
-        <th>Remove last</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @date_range.each do |date| %>
-        <% occurrence = @behavior_occurrences_by_date[date] %>
-        <tr data-date="<%= date.iso8601 %>">
-          <td><%= date.to_fs(:long) %></td>
-          <td>
-            <%= form_for [@dog, @behavior, occurrence] do |f| %>
-              <%= hidden_field_tag :page, @page %>
-              <%= f.hidden_field :seen_on_date %>
-              <%= f.label :amount do %>
-                <%= f.number_field :amount, size: 4, min: 0.0, step: 0.1 %>
-              <% end %>
-              <%= f.submit "Update" %>
-            <% end %>
-          </td>
-          <td>
-            <% if @is_current_page && date == @today && occurrence.amount > 0 %>
-              <%= form_for [@dog, @behavior, occurrence] do |f| %>
-                <%= f.hidden_field :amount, value: occurrence.amount - 1 %>
-                <%= f.submit "-1" %>
-              <% end %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render "behavior_occurrences_bar_graph", behavior_occurrences_by_date: @behavior_occurrences_by_date %>
+  <%=
+    render "behavior_occurrences_table",
+      behavior_occurrences_by_date: @behavior_occurrences_by_date,
+      date_range: @date_range,
+      dog: @dog,
+      behavior: @behavior,
+      page: @page
+  %>
   <footer>
     <%= link_to "◀️ Previous month", dog_behavior_behavior_occurrences_path(@dog, @behavior, page: @page + 1) %>
     <% unless @is_current_page %>

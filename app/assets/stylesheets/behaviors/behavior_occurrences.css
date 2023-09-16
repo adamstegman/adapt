@@ -1,24 +1,79 @@
-table {
-  border-collapse: collapse;
-  text-align: center;
-  width: 100%;
-}
-th, td {
-  border-bottom: 1px solid black;
-  padding: 0.25rem 1rem;
-}
-
-article {
+article#behavior-occurrences {
   border-radius: 1rem;
   padding: 1rem;
 }
 
-article > footer {
+article#behavior-occurrences > footer {
   display: flex;
   justify-content: space-between;
 }
-article > footer a {
+article#behavior-occurrences > footer a {
   color: #333;
   padding: 0.5rem 1rem;
   text-decoration: none;
+}
+
+div#behavior-occurrences-bar-graph-container {
+  display: flex;
+  justify-content: center;
+}
+div#behavior-occurrences-bar-graph {
+  display: grid;
+  /* bar-containers, plus the x-axis */
+  grid-template-rows: 1fr max-content;
+  grid-column-gap: 3px;
+  /* So the y-axis column is always the last, allowing the bars to auto-layout */
+  direction: rtl;
+
+  height: 10rem;
+  margin-bottom: 1rem;
+}
+div#behavior-occurrences-bar-graph .bar-container {
+  grid-row: 1;
+
+  display: grid;
+  /* 100 percentage points */
+  grid-template-rows: repeat(100, 1fr);
+  height: 9rem;
+}
+div#behavior-occurrences-bar-graph .bar {
+  grid-row-start: 1;
+  grid-row-end: 101;
+  border-radius: 0.5rem;
+  background-color: #333;
+}
+div#behavior-occurrences-bar-graph .bar-label {
+  display: none;
+  color: #333;
+  font-size: 0.75rem;
+  text-align: center;
+}
+div#behavior-occurrences-bar-graph .bar-container:hover > .bar,
+div#behavior-occurrences-bar-graph .bar:hover {
+  background-color: #eee;
+}
+div#behavior-occurrences-bar-graph .bar-container:hover > .bar > .bar-label,
+div#behavior-occurrences-bar-graph .bar:hover > .bar-label {
+  display: block;
+}
+div#behavior-occurrences-bar-graph .y-axis-label {
+  border-top: 1px solid #333;
+}
+div#behavior-occurrences-bar-graph .x-axis-label {
+  grid-row: 2;
+
+  font-size: 0.75rem;
+  /* And now we have to override direction: rtl above */
+  direction: ltr;
+}
+
+table#behavior-occurrences-table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+table#behavior-occurrences-table th,
+table#behavior-occurrences-table td {
+  border-bottom: 1px solid #000;
+  padding: 0.25rem 1rem;
 }

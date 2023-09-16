@@ -1,0 +1,26 @@
+<table id="behavior-occurrences-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% date_range.each do |date| %>
+      <% occurrence = behavior_occurrences_by_date[date] %>
+      <tr data-date="<%= date.iso8601 %>">
+        <td><%= date.to_fs(:long) %></td>
+        <td>
+          <%= form_for [dog, behavior, occurrence] do |f| %>
+            <%= hidden_field_tag :page, page %>
+            <%= f.hidden_field :seen_on_date %>
+            <%= f.label :amount do %>
+              <%= f.number_field :amount, size: 4, min: 0.0, step: 0.1 %>
+            <% end %>
+            <%= f.submit "Update" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

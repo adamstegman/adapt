@@ -33,13 +33,4 @@ RSpec.feature "Behavior occurrences", type: :feature do
       expect(find("input#behavior_occurrence_amount").value.to_f).to eq(2.0)
     end
   end
-
-  scenario "remove an occurrence" do
-    within "tr[data-date='#{date.iso8601}']" do
-      fill_in("behavior_occurrence_amount", with: "2")
-      click_button "Update"
-      click_button "-1"
-      expect(find("input#behavior_occurrence_amount").value.to_f).to eq(1.0)
-    end
-  end
 end

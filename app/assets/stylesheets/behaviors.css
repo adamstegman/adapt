@@ -6,24 +6,24 @@ main#behaviors {
   justify-content: center;
 }
 
-section {
+main#behaviors > section {
   display: flex;
   flex-direction: column;
 
   border-radius: 0.75rem;
   text-align: center;
 }
-section form {
+main#behaviors > section form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   margin: 1rem 1rem 0;
 }
-section h3 {
+main#behaviors > section h3 {
   margin: 0;
 }
-section input[type=submit] {
+main#behaviors > section input[type=submit] {
   border: none;
   padding: 1rem 0;
   width: 100%;
@@ -33,7 +33,7 @@ section input[type=submit] {
   font-size: 2em;
   font-weight: bold;
 }
-section span {
+main#behaviors > section span {
   font-size: 0.75rem;
   margin: 0 1rem 1rem;
 }

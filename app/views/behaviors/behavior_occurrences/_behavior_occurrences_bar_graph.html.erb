@@ -1,0 +1,71 @@
+<!-- https://css-tricks.com/making-a-bar-chart-with-css-grid/ -->
+<div id="behavior-occurrences-bar-graph-container">
+  <%
+    count = behavior_occurrences_by_date.size
+    column_count = count + 1 # room for the y-axis
+  %>
+  <div id="behavior-occurrences-bar-graph" style="grid-template-columns: repeat(<%= column_count %>, 1fr)">
+    <%
+      total_rows = 101 # 1 through 101, for 100 percentage points
+      max_amount = behavior_occurrences_by_date.values.map(&:amount).max
+      y_label_max = max_amount.round(-1)
+      y_label_max = 5 if y_label_max == 0
+      graph_top_amount = [max_amount, y_label_max.to_f].max
+      y_label_max_percentage = ((y_label_max / graph_top_amount) * 100).round
+      y_label_mid = nil
+      y_label_mid_percentage = nil
+      if y_label_max >= 10
+        y_label_mid = y_label_max / 2
+        y_label_mid_percentage = ((y_label_mid / graph_top_amount) * 100).round
+      end
+      ordered_dates = behavior_occurrences_by_date.keys
+      half_date_index = count/2
+      half_date = ordered_dates[half_date_index]
+    %>
+    <div class="bar-container" style="grid-column: <%= column_count %>">
+      <span
+       class="y-axis-label"
+       style="grid-row-start: <%= total_rows - y_label_max_percentage %>"
+      >
+        <%= y_label_max %>
+      </span>
+      <% if y_label_mid %>
+        <span
+         class="y-axis-label"
+         style="grid-row-start: <%= total_rows - y_label_mid_percentage %>"
+        >
+          <%= y_label_mid %>
+        </span>
+      <% end %>
+    </div>
+    <span
+     class="x-axis-label"
+     style="grid-column-start: 1; grid-column-end: 8; text-align: right;"
+     >
+      <%= ordered_dates.first.to_fs(:short) %>
+    </span>
+    <span
+     class="x-axis-label"
+     style="grid-column-start: <%= half_date_index - 3 %>; grid-column-end: <%= half_date_index + 6 %>; text-align: center;"
+    >
+      <%= half_date.to_fs(:short) %>
+    </span>
+    <span
+     class="x-axis-label"
+     style="grid-column-start: <%= column_count - 7 %>; grid-column-end: <%= column_count %>; text-align: left;"
+    >
+      <%= ordered_dates.last.to_fs(:short) %>
+    </span>
+    <% behavior_occurrences_by_date.each do |date, occurrence| %>
+      <%
+        percentage = ((occurrence.amount / graph_top_amount) * 100).round
+        percentage = 1 if percentage == 0 # need a sliver at the bottom for 0
+      %>
+      <div class="bar-container">
+        <div class="bar" style="grid-row-start: <%= total_rows - percentage %>">
+          <span class="bar-label"><%= number_with_precision(occurrence.amount, strip_insignificant_zeros: true) %></span>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
