@@ -1,7 +1,8 @@
 main#behaviors {
   display: grid;
   grid-template-columns: repeat(auto-fill, 9rem);
-  grid-template-rows: repeat(auto-fill, 11rem);
+  /* TODO: Looks bad if the behavior name wraps onto two lines, so might want to truncate */
+  grid-template-rows: repeat(auto-fill, 9rem);
   gap: 1rem;
   justify-content: center;
 }
