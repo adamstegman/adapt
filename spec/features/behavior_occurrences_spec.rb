@@ -13,7 +13,7 @@ RSpec.feature "Behavior occurrences", type: :feature do
 
   before do
     visit root_path
-    click_link "Stress Barking"
+    click_link "Stress Bark"
   end
 
   scenario "create a new occurrence" do
