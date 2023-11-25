@@ -27,8 +27,7 @@ class Behaviors::BehaviorOccurrencesController < ApplicationController
   end
 
   def create
-    default_params = {seen_on_date: Time.current.in_time_zone(@timezone).to_date}
-    @occurrence = @dog.behavior_occurrences.build(default_params.merge(behavior_occurrence_params).merge(behavior: @behavior))
+    @occurrence = @dog.behavior_occurrences.build(behavior_occurrence_params.merge(behavior: @behavior))
 
     if @occurrence.save
       log("Created occurrence with #{behavior_occurrence_params.inspect}")

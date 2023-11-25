@@ -1,7 +1,8 @@
 <section id="<%= dom_id behavior %>" data-behavior-color="<%= behavior.color %>">
   <%= form_for [dog, behavior, occurrence] do |f| %>
     <%= f.hidden_field :amount, value: occurrence.amount + 1 %>
-    <h3><%= link_to behavior.name, dog_behavior_behavior_occurrences_path(@dog, behavior) %></h3>
+    <%= f.hidden_field :seen_on_date %>
+    <h3><%= link_to behavior.name, dog_behavior_behavior_occurrences_path(dog, behavior) %></h3>
     <%= f.submit number_with_precision(occurrence.amount, strip_insignificant_zeros: true), data: {behavior_color: behavior.color} %>
   <% end %>
   <% if occurrence.updated_at %>
