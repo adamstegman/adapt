@@ -43,7 +43,7 @@ namespace :crazy_dog do
         # start year over at 2021 for every new set of behaviors
         if behaviors_by_column.keys != last_columns
           last_columns = behaviors_by_column.keys
-          year = 2021
+          year = 2022
         end
         table.each do |row|
           seen_on_date = row[:date] || row[nil] # date column (first column) can be unlabeled
@@ -53,8 +53,8 @@ namespace :crazy_dog do
           end
           parsed_seen_on_date = parsed_seen_on_date.change(year: year)
           behaviors_by_column.each do |column, behavior|
-            amount = row[column]
-            if amount
+            amount = row[column].to_f
+            if amount && amount > 0.0
               occurrence = BehaviorOccurrence.find_by(
                 dog: dog,
                 behavior: behavior,
@@ -71,7 +71,7 @@ namespace :crazy_dog do
               Rails.logger.info("Updating! behavior=#{behavior.name} seen_on_date=#{parsed_seen_on_date.inspect} amount=#{amount.inspect}")
               occurrence.update!(amount: amount)
             else
-              Rails.logger.warn("nil amount on row date=#{parsed_seen_on_date.inspect} column=#{column}")
+              Rails.logger.warn("Nothing. amount=#{amount.inspect} on row date=#{parsed_seen_on_date.inspect} column=#{column}")
             end
           end
         rescue => e
